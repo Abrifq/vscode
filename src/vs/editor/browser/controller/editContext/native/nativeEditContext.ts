@@ -5,7 +5,7 @@
 
 import './nativeEditContext.css';
 import { isFirefox } from '../../../../../base/browser/browser.js';
-import { addDisposableListener, getActiveWindow } from '../../../../../base/browser/dom.js';
+import { addDisposableListener, getActiveWindow, getWindowById } from '../../../../../base/browser/dom.js';
 import { FastDomNode } from '../../../../../base/browser/fastDomNode.js';
 import { StandardKeyboardEvent } from '../../../../../base/browser/keyboardEvent.js';
 import { KeyCode } from '../../../../../base/common/keyCodes.js';
@@ -53,6 +53,7 @@ export class NativeEditContext extends AbstractEditContext {
 	private readonly _selectionChangeListener: MutableDisposable<IDisposable>;
 
 	constructor(
+		windowId: number,
 		context: ViewContext,
 		overflowGuardContainer: FastDomNode<HTMLElement>,
 		viewController: ViewController,
@@ -75,7 +76,8 @@ export class NativeEditContext extends AbstractEditContext {
 			this._context.viewModel.setHasFocus(newFocusValue);
 		}));
 
-		this._editContext = new EditContext();
+		const targetWindow = getWindowById(windowId);
+		this._editContext = targetWindow ? new (targetWindow.window as any).EditContext() : new EditContext();
 		this.domNode.domNode.editContext = this._editContext;
 
 		this._screenReaderSupport = instantiationService.createInstance(ScreenReaderSupport, this.domNode, context);

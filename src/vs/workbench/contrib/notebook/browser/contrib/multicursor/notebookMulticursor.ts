@@ -46,6 +46,7 @@ import { INotebookActionContext, NotebookAction } from '../../controller/coreAct
 import { getNotebookEditorFromEditorPane, ICellViewModel, INotebookEditor, INotebookEditorContribution } from '../../notebookBrowser.js';
 import { registerNotebookContribution } from '../../notebookEditorExtensions.js';
 import { CellEditorOptions } from '../../view/cellParts/cellEditorOptions.js';
+import { mainWindow } from '../../../../../../base/browser/window.js';
 
 const NOTEBOOK_ADD_FIND_MATCH_TO_SELECTION_ID = 'notebook.addFindMatchToSelection';
 
@@ -688,7 +689,7 @@ export class NotebookMultiCursorController extends Disposable implements INotebo
 	private constructCellEditorOptions(cell: ICellViewModel): EditorConfiguration {
 		const cellEditorOptions = new CellEditorOptions(this.notebookEditor.getBaseCellEditorOptions(cell.language), this.notebookEditor.notebookOptions, this.configurationService);
 		const options = cellEditorOptions.getUpdatedValue(cell.internalMetadata, cell.uri);
-		return new EditorConfiguration(false, MenuId.EditorContent, options, null, this.accessibilityService);
+		return new EditorConfiguration(false, MenuId.EditorContent, mainWindow.vscodeWindowId, options, null, this.accessibilityService);
 	}
 
 	/**

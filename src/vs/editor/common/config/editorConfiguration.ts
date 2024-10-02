@@ -19,6 +19,10 @@ export interface IEditorConfiguration extends IDisposable {
 	 */
 	readonly contextMenuId: MenuId;
 	/**
+	 * A reference to the window that the editor is created in.
+	 */
+	readonly windowId: number;
+	/**
 	 * Computed editor options.
 	 */
 	readonly options: IComputedEditorOptions;

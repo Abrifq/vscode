@@ -10,11 +10,12 @@ import { TestCodeEditorCreationOptions } from '../testCodeEditor.js';
 import { AccessibilitySupport } from '../../../../platform/accessibility/common/accessibility.js';
 import { TestAccessibilityService } from '../../../../platform/accessibility/test/common/testAccessibilityService.js';
 import { MenuId } from '../../../../platform/actions/common/actions.js';
+import { mainWindow } from '../../../../base/browser/window.js';
 
 export class TestConfiguration extends EditorConfiguration {
 
 	constructor(opts: Readonly<TestCodeEditorCreationOptions>) {
-		super(false, MenuId.EditorContext, opts, null, new TestAccessibilityService());
+		super(false, MenuId.EditorContext, mainWindow.vscodeWindowId, opts, null, new TestAccessibilityService());
 	}
 
 	protected override _readEnvConfiguration(): IEnvConfiguration {

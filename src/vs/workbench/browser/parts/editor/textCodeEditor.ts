@@ -42,7 +42,9 @@ export abstract class AbstractTextCodeEditor<T extends IEditorViewState> extends
 	}
 
 	protected getCodeEditorWidgetOptions(): ICodeEditorWidgetOptions {
-		return Object.create(null);
+		return {
+			windowId: this.window.vscodeWindowId
+		};
 	}
 
 	protected updateEditorControlOptions(options: ICodeEditorOptions): void {

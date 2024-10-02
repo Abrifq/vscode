@@ -60,6 +60,7 @@ import { INotificationService, Severity } from '../../../../platform/notificatio
 import { editorErrorForeground, editorHintForeground, editorInfoForeground, editorWarningForeground } from '../../../../platform/theme/common/colorRegistry.js';
 import { IThemeService, registerThemingParticipant } from '../../../../platform/theme/common/themeService.js';
 import { MenuId } from '../../../../platform/actions/common/actions.js';
+import { mainWindow } from '../../../../base/browser/window.js';
 
 export class CodeEditorWidget extends Disposable implements editorBrowser.ICodeEditor {
 
@@ -273,6 +274,7 @@ export class CodeEditorWidget extends Disposable implements editorBrowser.ICodeE
 
 		this._configuration = this._register(this._createConfiguration(codeEditorWidgetOptions.isSimpleWidget || false,
 			codeEditorWidgetOptions.contextMenuId ?? (codeEditorWidgetOptions.isSimpleWidget ? MenuId.SimpleEditorContext : MenuId.EditorContext),
+			codeEditorWidgetOptions.windowId ?? mainWindow.vscodeWindowId,
 			options, accessibilityService));
 		this._register(this._configuration.onDidChange((e) => {
 			this._onDidChangeConfiguration.fire(e);
@@ -381,8 +383,8 @@ export class CodeEditorWidget extends Disposable implements editorBrowser.ICodeE
 		this._modelData?.view.writeScreenReaderContent(reason);
 	}
 
-	protected _createConfiguration(isSimpleWidget: boolean, contextMenuId: MenuId, options: Readonly<IEditorConstructionOptions>, accessibilityService: IAccessibilityService): EditorConfiguration {
-		return new EditorConfiguration(isSimpleWidget, contextMenuId, options, this._domElement, accessibilityService);
+	protected _createConfiguration(isSimpleWidget: boolean, contextMenuId: MenuId, windowId: number, options: Readonly<IEditorConstructionOptions>, accessibilityService: IAccessibilityService): EditorConfiguration {
+		return new EditorConfiguration(isSimpleWidget, contextMenuId, windowId, options, this._domElement, accessibilityService);
 	}
 
 	public getId(): string {
@@ -1978,6 +1980,11 @@ export interface ICodeEditorWidgetOptions {
 	 * Defaults to MenuId.SimpleEditorContext or MenuId.EditorContext depending on whether the widget is simple.
 	 */
 	contextMenuId?: MenuId;
+
+	/**
+	 * A reference to the window that the editor is created in.
+	 */
+	windowId?: number;
 }
 
 class ModelData {

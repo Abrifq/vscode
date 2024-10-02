@@ -45,6 +45,7 @@ export class EditorConfiguration extends Disposable implements IEditorConfigurat
 
 	public readonly isSimpleWidget: boolean;
 	public readonly contextMenuId: MenuId;
+	public readonly windowId: number;
 	private readonly _containerObserver: ElementSizeObserver;
 
 	private _isDominatedByLongLines: boolean = false;
@@ -71,6 +72,7 @@ export class EditorConfiguration extends Disposable implements IEditorConfigurat
 	constructor(
 		isSimpleWidget: boolean,
 		contextMenuId: MenuId,
+		windowId: number,
 		options: Readonly<IEditorConstructionOptions>,
 		container: HTMLElement | null,
 		@IAccessibilityService private readonly _accessibilityService: IAccessibilityService
@@ -78,6 +80,7 @@ export class EditorConfiguration extends Disposable implements IEditorConfigurat
 		super();
 		this.isSimpleWidget = isSimpleWidget;
 		this.contextMenuId = contextMenuId;
+		this.windowId = windowId;
 		this._containerObserver = this._register(new ElementSizeObserver(container, options.dimension));
 		this._targetWindowId = getWindow(container).vscodeWindowId;
 

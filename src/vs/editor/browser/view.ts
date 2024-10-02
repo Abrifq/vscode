@@ -103,6 +103,7 @@ export class View extends ViewEventHandler {
 	private readonly _pointerHandler: PointerHandler;
 
 	// Dom nodes
+	private readonly windowId: number;
 	private readonly _linesContent: FastDomNode<HTMLElement>;
 	public readonly domNode: FastDomNode<HTMLElement>;
 	private readonly _overflowGuardContainer: FastDomNode<HTMLElement>;
@@ -121,6 +122,7 @@ export class View extends ViewEventHandler {
 		@IInstantiationService private readonly _instantiationService: IInstantiationService
 	) {
 		super();
+		this.windowId = configuration.windowId;
 		this._selections = [new Selection(1, 1, 1, 1)];
 		this._renderAnimationFrame = null;
 
@@ -267,7 +269,11 @@ export class View extends ViewEventHandler {
 	}
 
 	private _instantiateEditContext(experimentalEditContextEnabled: boolean): AbstractEditContext {
-		return this._instantiationService.createInstance(experimentalEditContextEnabled ? NativeEditContext : TextAreaEditContext, this._context, this._overflowGuardContainer, this._viewController, this._createTextAreaHandlerHelper());
+		if (experimentalEditContextEnabled) {
+			return this._instantiationService.createInstance(NativeEditContext, this.windowId, this._context, this._overflowGuardContainer, this._viewController, this._createTextAreaHandlerHelper());
+		}
+
+		return this._instantiationService.createInstance(TextAreaEditContext, this._context, this._overflowGuardContainer, this._viewController, this._createTextAreaHandlerHelper());
 	}
 
 	private _updateEditContext(): void {

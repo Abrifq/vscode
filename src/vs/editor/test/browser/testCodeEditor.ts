@@ -71,7 +71,7 @@ export interface ITestCodeEditor extends IActiveCodeEditor {
 export class TestCodeEditor extends CodeEditorWidget implements ICodeEditor {
 
 	//#region testing overrides
-	protected override _createConfiguration(isSimpleWidget: boolean, contextMenuId: MenuId, options: Readonly<TestCodeEditorCreationOptions>): EditorConfiguration {
+	protected override _createConfiguration(isSimpleWidget: boolean, contextMenuId: MenuId, windowId: number, options: Readonly<TestCodeEditorCreationOptions>): EditorConfiguration {
 		return new TestConfiguration(options);
 	}
 	protected override _createView(viewModel: ViewModel): [View, boolean] {
